@@ -1,0 +1,34 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  DOCKER_IMAGE: "registry.gitlab.com/ваш-username/devops-project:latest"
+
+# Запускается при каждом push
+test-job:
+  stage: test
+  script:
+    - echo "Running tests..."
+    - apt-get update && apt-get install -y curl
+    - curl --version
+
+# Собирает Docker-образ (будет работать после изучения Docker)
+build-job:
+  stage: build
+  only:
+    - main  # Только для main ветки
+  script:
+    - echo "Building Docker image..."
+    - docker build -t $DOCKER_IMAGE .
+    - docker push $DOCKER_IMAGE
+
+# Руководство по развертыванию (замените на реальные команды)
+deploy-job:
+  stage: deploy
+  only:
+    - main
+  script:
+    - echo "Deploying to production..."
+    - echo "Imagine here is your deploy script to Yandex Cloud"
